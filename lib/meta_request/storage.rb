@@ -4,12 +4,20 @@ module MetaRequest
   class Storage
     attr_reader :key
 
+    POOL_SIZE = 20
+
     def initialize(key)
       @key = key
     end
 
     def write(value)
-      tempfiles[json_file].write(value)
+      tempfiles[json_file].write(value).tap do
+        while tempfiles.size > POOL_SIZE
+          k, v = tempfiles.shift
+          v.close
+          v.unlink
+        end
+      end
     end
 
     def read
@@ -17,6 +25,8 @@ module MetaRequest
         tempfile = tempfiles[json_file]
         tempfile.rewind
         tempfile.read
+      else
+        ''
       end
     end
 
