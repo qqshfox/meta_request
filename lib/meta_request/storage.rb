@@ -30,10 +30,22 @@ module MetaRequest
       end
     end
 
+    def self.clean
+      while !tempfiles.empty?
+        k, v = tempfiles.shift
+        v.close
+        v.unlink
+      end
+    end
+
     private
 
+    def self.tempfiles
+      @tempfiles ||= Hash.new { |hash, key| hash[key] = Tempfile.new(key) }
+    end
+
     def tempfiles
-      @@tempfiles ||= Hash.new { |hash, key| hash[key] = Tempfile.new(key) }
+      self.class.tempfiles
     end
 
     def json_file

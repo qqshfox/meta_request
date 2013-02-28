@@ -25,6 +25,6 @@ describe MetaRequest::Middlewares::MetaRequestHandler do
   end
 
   after do
-    FileUtils.rm_rf "#{Dir.pwd}/tmp"
+    MetaRequest::Storage.clean
   end
 end
