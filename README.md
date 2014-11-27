@@ -16,7 +16,7 @@ end
 
 See [Rails Panel extension](https://github.com/dejan/rails_panel).
 
-## Licence
+## License
 
 Copyright (c) 2012 Dejan Simic
 
